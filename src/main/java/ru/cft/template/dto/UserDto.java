@@ -1,6 +1,7 @@
 package ru.cft.template.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ public class UserDto {
     String middleName;
     String phone;
     String email;
-    LocalDate birthday;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    String birthday;
     String password;
 }
