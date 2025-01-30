@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.IdResponseDto;
-import ru.cft.template.dto.UserCreateDto;
-import ru.cft.template.dto.UserDto;
-import ru.cft.template.dto.UserUpdateDto;
+import ru.cft.template.dto.user.UserCreateDto;
+import ru.cft.template.dto.user.UserUpdateDto;
 import ru.cft.template.service.UserService;
 
 @RestController

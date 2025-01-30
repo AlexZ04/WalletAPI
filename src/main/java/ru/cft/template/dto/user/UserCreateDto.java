@@ -1,4 +1,4 @@
-package ru.cft.template.dto;
+package ru.cft.template.dto.user;
 
 import lombok.Data;
 
@@ -23,14 +23,6 @@ public class UserCreateDto {
     @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!?])[A-Za-z\\d!?]{8,64}")
     String password;
 
-    public UserCreateDto(User user) {
-        this.lastName = user.getLastName();
-        this.firstName = user.getFirstName();
-        this.middleName = user.getMiddleName();
-        this.phone = user.getPhone();
-        this.email = user.getEmail();
-        this.birthday = user.getBirthday();
-        this.password = user.getPassword();
-    }
+    public UserCreateDto() {}
 
 }

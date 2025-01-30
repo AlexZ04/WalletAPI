@@ -1,4 +1,4 @@
-package ru.cft.template.dto;
+package ru.cft.template.dto.user;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

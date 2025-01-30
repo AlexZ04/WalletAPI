@@ -1,4 +1,4 @@
-package ru.cft.template.dto;
+package ru.cft.template.dto.user;
 
 import lombok.Data;
 import ru.cft.template.model.User;
@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 @Data
 public class UserDto {
-    String lastName;
-    String firstName;
-    String middleName;
-    String phone;
-    String email;
-    LocalDateTime birthday;
-    String password;
-    LocalDateTime createTime;
-    LocalDateTime updateTime;
+    private String lastName;
+    private String firstName;
+    private String middleName;
+    private String phone;
+    private String email;
+    private LocalDateTime birthday;
+    private String password;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 
     public UserDto(User user) {
         this.lastName = user.getLastName();

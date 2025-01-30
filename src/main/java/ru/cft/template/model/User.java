@@ -5,7 +5,7 @@ import lombok.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.cft.template.configuration.Security;
-import ru.cft.template.dto.UserCreateDto;
+import ru.cft.template.dto.user.UserCreateDto;
 
 import java.time.LocalDateTime;
 
