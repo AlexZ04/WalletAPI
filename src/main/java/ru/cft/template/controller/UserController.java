@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.IdResponseDto;
 import ru.cft.template.dto.UserDto;
+import ru.cft.template.dto.UserUpdateDto;
 import ru.cft.template.service.UserService;
 
 @RestController
@@ -19,12 +20,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public void getUserByUId(int id) {
+    public UserDto getUserByUId(@PathVariable int id) {
         //todo
+        return null;
     }
 
     @PatchMapping("/users/{id}")
-    public void updateUser(int id) {
+    public void updateUser(@PathVariable int id, @RequestBody UserUpdateDto user) {
         // todo
     }
 }
