@@ -64,4 +64,14 @@ public class SessionServiceImpl implements SessionService {
         session.setExpirationTime(LocalDateTime.now().plusMinutes(30));
         sessionRepository.save(session);
     }
+
+    @Override
+    public boolean checkSession(Session session) {
+        if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
+            session.setActive(false);
+            sessionRepository.save(session);
+        }
+
+        return session.getActive();
+    }
 }
