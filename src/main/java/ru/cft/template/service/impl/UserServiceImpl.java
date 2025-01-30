@@ -19,6 +19,7 @@ import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -75,6 +76,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userUpd.getFirstName());
         user.setMiddleName(userUpd.getMiddleName());
         user.setBirthday(userUpd.getBirthday());
+        user.setUpdateTime(LocalDateTime.now());
 
         userRepository.save(user);
     }
