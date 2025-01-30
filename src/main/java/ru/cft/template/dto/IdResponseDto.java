@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class IdResponseDto {
-    public int id;
+    public Long id;
 
-    public IdResponseDto(int id) {
+    public IdResponseDto(Long id) {
         this.id = id;
     }
 }

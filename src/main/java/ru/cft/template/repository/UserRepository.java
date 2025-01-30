@@ -1,15 +1,9 @@
 package ru.cft.template.repository;
 
-import org.springframework.stereotype.Repository;
-import ru.cft.template.dto.IdResponseDto;
-import ru.cft.template.dto.UserDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.cft.template.model.User;
 
-@Repository
-public class UserRepository {
-
-    public IdResponseDto createUser(UserDto user) {
-        return new IdResponseDto(4);
-    }
-
-    //todo
+public interface UserRepository extends JpaRepository<User, Long> {
+    Boolean existsByPhone(String phone);
+    Boolean existsByEmail(String email);
 }

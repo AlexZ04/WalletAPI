@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.cft.template.configuration.Security;
+import ru.cft.template.dto.UserDto;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -20,10 +24,20 @@ public class User {
     @Column(unique = true)
     String email;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    String birthday;
+    LocalDateTime birthday;
     String password;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    String createTime;
+    LocalDateTime createTime = LocalDateTime.now();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    String updateTime;
+    LocalDateTime updateTime = null;
+
+    public User(UserDto user) {
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.middleName = user.getMiddleName();
+        this.phone = user.getPhone();
+        this.email = user.getEmail();
+        this.birthday = user.getBirthday();
+        this.password = Security.hashPassword(user.getPassword());
+    }
 }
