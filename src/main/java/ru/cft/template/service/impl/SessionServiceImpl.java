@@ -14,6 +14,7 @@ import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.service.SessionService;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -51,6 +52,16 @@ public class SessionServiceImpl implements SessionService {
                 .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
         session.setActive(false);
+        sessionRepository.save(session);
+    }
+
+    @Override
+    public void extendSession(UUID sessionId) {
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+
+        session.setActive(true);
+        session.setExpirationTime(LocalDateTime.now().plusMinutes(30));
         sessionRepository.save(session);
     }
 }
