@@ -12,18 +12,18 @@ import java.util.UUID;
 @Table(name = "sessions")
 public class Session {
     @Id
-    UUID sessionId = UUID.randomUUID();
+    private UUID sessionId = UUID.randomUUID();
     @ManyToOne(cascade = CascadeType.ALL)
-    User user;
+    private User user;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDateTime expirationTime;
-    Boolean active;
+    private LocalDateTime expirationTime;
+    private Boolean active;
 
     public Session() {}
 
     public Session(User user) {
         this.user = user;
-        this.expirationTime = LocalDateTime.now().plusMinutes(30);
-        this.active = true;
+        expirationTime = LocalDateTime.now().plusMinutes(30);
+        active = true;
     }
 }

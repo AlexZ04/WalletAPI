@@ -15,31 +15,31 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue
-    Long id;
-    String lastName;
-    String firstName;
-    String middleName;
+    private Long id;
+    private String lastName;
+    private String firstName;
+    private String middleName;
     @Column(unique = true)
-    String phone;
+    private String phone;
     @Column(unique = true)
-    String email;
+    private String email;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDateTime birthday;
-    String password;
+    private LocalDateTime birthday;
+    private String password;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDateTime createTime = LocalDateTime.now();
+    private LocalDateTime createTime = LocalDateTime.now();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDateTime updateTime = null;
+    private LocalDateTime updateTime = null;
 
     public User() {}
 
     public User(UserCreateDto user) {
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.middleName = user.getMiddleName();
-        this.phone = user.getPhone();
-        this.email = user.getEmail();
-        this.birthday = user.getBirthday();
-        this.password = Security.hashPassword(user.getPassword());
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        middleName = user.getMiddleName();
+        phone = user.getPhone();
+        email = user.getEmail();
+        birthday = user.getBirthday();
+        password = Security.hashPassword(user.getPassword());
     }
 }
