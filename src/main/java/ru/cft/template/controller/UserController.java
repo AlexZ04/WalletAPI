@@ -8,6 +8,8 @@ import ru.cft.template.dto.user.UserCreateDto;
 import ru.cft.template.dto.user.UserUpdateDto;
 import ru.cft.template.service.UserService;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/User")
 @AllArgsConstructor
@@ -21,12 +23,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> getUserByUId(@PathVariable Long id) {
-        return service.getUserById(id);
+    public ResponseEntity<?> getUserByUId(@PathVariable Long id, @RequestHeader UUID sessionId) {
+        return service.getUserById(id, sessionId);
     }
 
     @PatchMapping("/users/{id}")
-    public void updateUser(@PathVariable int id, @RequestBody UserUpdateDto user) {
-        // todo
+    public void updateUser(@PathVariable Long id, @RequestBody UserUpdateDto user, @RequestHeader UUID sessionId) {
+        service.updateUser(id, user, sessionId);
     }
 }

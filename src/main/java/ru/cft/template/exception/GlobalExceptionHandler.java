@@ -25,4 +25,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseDto(HttpStatus.UNAUTHORIZED.value(), exception.getMessage()),
                 HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchForbidException(ForbidException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.FORBIDDEN.value(), exception.getMessage()),
+                HttpStatus.FORBIDDEN);
+    }
 }
