@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         if (repository.existsByEmail(user.getEmail())) {
             throw new UsedCredentialsException("Email already used");
         }
-        if (repository.existsByEmail(user.getPhone())) {
+        if (repository.existsByPhone(user.getPhone())) {
             throw new UsedCredentialsException("Phone already used");
         }
 
@@ -30,5 +30,10 @@ public class UserServiceImpl implements UserService {
         repository.save(newUser);
 
         return new IdResponseDto(newUser.getId());
+    }
+
+    @Override
+    public UserDto getUserById(int id) {
+        return null;
     }
 }
