@@ -12,8 +12,10 @@ import ru.cft.template.dto.user.UserUpdateDto;
 import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;
+import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
+import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.UserService;
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
+    private final WalletRepository walletRepository;
 
     @Override
     public IdResponseDto createUser(UserCreateDto user) {
@@ -40,8 +43,10 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = new User(user);
+        Wallet newUserWallet = new Wallet(newUser);
 
         userRepository.save(newUser);
+        walletRepository.save(newUserWallet);
 
         return new IdResponseDto(newUser.getId());
     }
