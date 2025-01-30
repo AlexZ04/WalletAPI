@@ -13,4 +13,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseDto(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchUserNotFoundException(UserNotFoundException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
 }

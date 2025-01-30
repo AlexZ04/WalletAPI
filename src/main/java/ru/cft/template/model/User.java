@@ -5,7 +5,7 @@ import lombok.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.cft.template.configuration.Security;
-import ru.cft.template.dto.UserDto;
+import ru.cft.template.dto.UserCreateDto;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +31,9 @@ public class User {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime updateTime = null;
 
-    public User(UserDto user) {
+    public User() {}
+
+    public User(UserCreateDto user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.middleName = user.getMiddleName();
