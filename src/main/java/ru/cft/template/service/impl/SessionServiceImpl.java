@@ -25,7 +25,7 @@ public class SessionServiceImpl implements SessionService {
                 .orElseThrow(() -> new UnauthorizedException("Incorrect credentials"));
 
         if (!Security.checkPassword(loginData.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException(loginData.getPassword());
+            throw new UnauthorizedException("Incorrect credentials");
         }
 
         Session session = new Session(user);
