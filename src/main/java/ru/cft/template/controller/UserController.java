@@ -14,8 +14,7 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/users")
-    public IdResponseDto createUser(UserDto user) {
-        //todo
+    public IdResponseDto createUser(@RequestBody UserDto user) {
         return service.createUser(user);
     }
 

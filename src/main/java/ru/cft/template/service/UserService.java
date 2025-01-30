@@ -7,4 +7,5 @@ import ru.cft.template.dto.UserDto;
 public interface UserService {
 
     IdResponseDto createUser(UserDto user);
+    //todo
 }
