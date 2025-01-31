@@ -12,6 +12,7 @@ import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.TransferRepository;
 import ru.cft.template.repository.WalletRepository;
+import ru.cft.template.service.MoneyTransactionService;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.TransferService;
@@ -24,6 +25,7 @@ public class TransferServiceImpl implements TransferService {
     private final TransferRepository transferRepository;
     private final WalletRepository walletRepository;
     private final SecurityService securityService;
+    private final MoneyTransactionService moneyTransactionService;
 
     @Override
     public Wallet findWalletById(Long id) {
@@ -58,20 +60,10 @@ public class TransferServiceImpl implements TransferService {
     }
 
     public TransferDto createTransfer(Wallet from, Wallet to, Long amount) {
-
-        if (from.getBalance() < amount) {
-            throw new NotEnoughMoneyException(ExceptionTexts.NOT_ENOUGH_MONEY);
-        }
-
-//        if (from.get)
-
-        from.setBalance(from.getBalance() - amount);
-        to.setBalance(to.getBalance() + amount);
+        moneyTransactionService.createTransaction(from, to, amount);
 
         Transfer transfer = new Transfer(from, to, amount);
         transferRepository.save(transfer);
-        walletRepository.save(from);
-        walletRepository.save(to);
 
         return new TransferDto(transfer);
     }
@@ -83,6 +75,9 @@ public class TransferServiceImpl implements TransferService {
 
         Transfer transfer = transferRepository.findById(transferId)
                 .orElseThrow(() -> new TransferNotFoundException(ExceptionTexts.TRANSFER_NOT_FOUND));
+
+        if (session.getUser().getId().longValue() != transfer.getFromWallet().getId().longValue())
+            throw new ForbidException(ExceptionTexts.FORBID_TRANSACTION_ACCESS);
 
         return new TransferDto(transfer);
     }

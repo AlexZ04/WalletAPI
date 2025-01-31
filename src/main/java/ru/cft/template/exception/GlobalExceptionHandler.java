@@ -68,4 +68,10 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchSelfTransactionException(SelfTransactionException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
 }

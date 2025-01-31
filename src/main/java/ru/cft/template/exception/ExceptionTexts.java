@@ -12,4 +12,6 @@ public class ExceptionTexts {
     public static final String FORBID_PROFILE_EDITING = "You can't edit another person profile";
     public static final String INVALID_CREDENTIALS = "Invalid credentials";
     public static final String SESSION_ALREADY_INACTIVE = "Session is already inactive";
+    public static final String SELF_TRANSACTION = "Transaction to yourself is not allowed";
+    public static final String FORBID_TRANSACTION_ACCESS = "You can't get an info about another person transfer";
 }
