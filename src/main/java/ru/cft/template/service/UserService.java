@@ -11,5 +11,5 @@ public interface UserService {
 
     IdResponseDto createUser(UserCreateDto user);
     ResponseEntity<?> getUserById(Long id, UUID sessionId);
-    void updateUser(Long id, UserUpdateDto userUpd, UUID sessionId);
+    void updateUser(UserUpdateDto userUpd, UUID sessionId);
 }

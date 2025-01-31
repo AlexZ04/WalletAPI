@@ -16,8 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TransferController {
     private final TransferService transferService;
-    private final SessionService sessionService;
-    private final SecurityService securityService;
 
     @PostMapping("/transfers/by-id")
     public TransferDto createTransactionByWalletId(@RequestHeader UUID sessionId,

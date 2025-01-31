@@ -74,7 +74,8 @@ public class TransferServiceImpl implements TransferService {
         Transfer transfer = transferRepository.findById(transferId)
                 .orElseThrow(() -> new TransferNotFoundException(ExceptionTexts.TRANSFER_NOT_FOUND));
 
-        if (session.getUser().getId().longValue() != transfer.getFromWallet().getId().longValue())
+        if (session.getUser().getId().longValue() != transfer.getFromWallet().getId().longValue() ||
+                session.getUser().getId().longValue() != transfer.getToWallet().getId().longValue())
             throw new ForbidException(ExceptionTexts.FORBID_TRANSACTION_ACCESS);
 
         return new TransferDto(transfer);

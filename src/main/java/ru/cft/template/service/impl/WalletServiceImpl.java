@@ -30,26 +30,20 @@ public class WalletServiceImpl implements WalletService {
     private final Random random = new Random();
 
     @Override
-    public WalletDto getWalletInfo(Long userId, UUID sessionId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
-
+    public WalletDto getWalletInfo(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 
-        Wallet wallet = walletRepository.findByUser(user);
+        Wallet wallet = walletRepository.findByUser(session.getUser());
 
         return new WalletDto(wallet);
     }
 
     @Override
-    public String hesoyam(Long userId, UUID sessionId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
-
+    public String hesoyam(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 
         if (random.nextInt(101) < 25) {
-            Wallet wallet = walletRepository.findByUser(user);
+            Wallet wallet = walletRepository.findByUser(session.getUser());
             int money = random.nextInt(20) + 1;
 
             wallet.setBalance(Math.max(wallet.getBalance() + money, 0));

@@ -13,14 +13,14 @@ import java.util.UUID;
 public class WalletController {
     private final WalletService walletService;
 
-    @GetMapping("/wallets/{userId}")
-    public WalletDto getWalletInfo(@PathVariable Long userId, @RequestHeader UUID sessionId) {
-        return walletService.getWalletInfo(userId, sessionId);
+    @GetMapping("/wallets")
+    public WalletDto getWalletInfo(@RequestHeader UUID sessionId) {
+        return walletService.getWalletInfo(sessionId);
     }
 
-    @PostMapping("/wallets/{userId}/HESOYAM")
-    public String hesoyam(@PathVariable Long userId, @RequestHeader UUID sessionId) {
-        return walletService.hesoyam(userId, sessionId);
+    @PostMapping("/wallets/HESOYAM")
+    public String hesoyam(@RequestHeader UUID sessionId) {
+        return walletService.hesoyam(sessionId);
     }
 
 }

@@ -15,20 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
 
     @PostMapping("/users")
     public IdResponseDto createUser(@RequestBody UserCreateDto user) {
-        return service.createUser(user);
+        return userService.createUser(user);
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id, @RequestHeader UUID sessionId) {
-        return service.getUserById(id, sessionId);
+        return userService.getUserById(id, sessionId);
     }
 
     @PatchMapping("/users/{id}")
-    public void updateUser(@PathVariable Long id, @RequestBody UserUpdateDto user, @RequestHeader UUID sessionId) {
-        service.updateUser(id, user, sessionId);
+    public void updateUser(@RequestBody UserUpdateDto user, @RequestHeader UUID sessionId) {
+        userService.updateUser(user, sessionId);
     }
 }

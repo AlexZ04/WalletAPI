@@ -64,14 +64,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, UserUpdateDto userUpd, UUID sessionId) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
-
+    public void updateUser(UserUpdateDto userUpd, UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 
-        if (session.getUser().getId().longValue() != user.getId().longValue())
-            throw new ForbidException(ExceptionTexts.FORBID_PROFILE_EDITING);
+        User user = session.getUser();
 
         user.setLastName(userUpd.getLastName());
         user.setFirstName(userUpd.getFirstName());
