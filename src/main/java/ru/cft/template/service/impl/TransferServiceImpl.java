@@ -9,12 +9,10 @@ import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.Transfer;
 import ru.cft.template.model.Wallet;
-import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.TransferRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.MoneyTransactionService;
 import ru.cft.template.service.SecurityService;
-import ru.cft.template.service.SessionService;
 import ru.cft.template.service.TransferService;
 
 import java.util.UUID;

@@ -13,15 +13,12 @@ import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;
 import ru.cft.template.model.Wallet;
-import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.SecurityService;
-import ru.cft.template.service.SessionService;
 import ru.cft.template.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service

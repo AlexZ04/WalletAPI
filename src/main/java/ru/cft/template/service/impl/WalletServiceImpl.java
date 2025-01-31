@@ -1,13 +1,9 @@
 package ru.cft.template.service.impl;
 
-import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.cft.template.dto.ResponseDto;
 import ru.cft.template.dto.wallet.WalletDto;
 import ru.cft.template.exception.ExceptionTexts;
-import ru.cft.template.exception.SessionNotFoundException;
-import ru.cft.template.exception.UnauthorizedException;
 import ru.cft.template.exception.UserNotFoundException;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;

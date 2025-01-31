@@ -2,13 +2,11 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.cft.template.exception.SessionAlreadyInactiveException;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
 import ru.cft.template.dto.session.SessionDto;
 import ru.cft.template.exception.ExceptionTexts;
-import ru.cft.template.exception.SessionNotFoundException;
 import ru.cft.template.exception.UnauthorizedException;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;

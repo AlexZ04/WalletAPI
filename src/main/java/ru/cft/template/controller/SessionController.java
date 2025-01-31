@@ -1,7 +1,5 @@
 package ru.cft.template.controller;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.session.LoginDto;
