@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface TransferService {
     Wallet findWalletById(Long id);
     Wallet findWalletByPhone(String phone);
-    TransferDto createTransfer(UUID sessionId, Wallet to, Long amount);
+    TransferDto createTransfer(Wallet from, Wallet to, Long amount);
 }

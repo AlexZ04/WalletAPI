@@ -44,4 +44,10 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchNotEnoughMoneyException(NotEnoughMoneyException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.FORBIDDEN.value(), exception.getMessage()),
+                HttpStatus.FORBIDDEN);
+    }
+
 }

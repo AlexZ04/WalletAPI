@@ -24,4 +24,10 @@ public class Transfer {
     private LocalDateTime creationTime;
 
     public Transfer() {}
+
+    public Transfer(Wallet from, Wallet to, Long amount) {
+        fromWallet = from;
+        toWallet = to;
+        this.amount = amount;
+    }
 }

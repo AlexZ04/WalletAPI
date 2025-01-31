@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("You session expired");
+            throw new UnauthorizedException("Your session expired");
         }
 
         if (!Objects.equals(session.getUser().getId(), user.getId())) {

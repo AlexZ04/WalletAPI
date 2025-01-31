@@ -3,14 +3,13 @@ package ru.cft.template.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cft.template.dto.transfer.TransferDto;
+import ru.cft.template.exception.NotEnoughMoneyException;
 import ru.cft.template.exception.WalletNotFoundException;
 import ru.cft.template.model.Transfer;
 import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.TransferRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.TransferService;
-
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +30,20 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public TransferDto createTransfer(UUID sessionId, Wallet to, Long amount) {
-        return null;
+    public TransferDto createTransfer(Wallet from, Wallet to, Long amount) {
+
+        if (from.getBalance() < amount) {
+            throw new NotEnoughMoneyException("Not enough money");
+        }
+
+        from.setBalance(from.getBalance() - amount);
+        to.setBalance(to.getBalance() + amount);
+
+        Transfer transfer = new Transfer(from, to, amount);
+        transferRepository.save(transfer);
+        walletRepository.save(from);
+        walletRepository.save(to);
+
+        return new TransferDto(transfer);
     }
 }
