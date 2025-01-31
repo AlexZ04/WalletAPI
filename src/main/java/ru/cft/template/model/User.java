@@ -30,6 +30,8 @@ public class User {
     private LocalDateTime createTime = LocalDateTime.now();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updateTime = null;
+    @OneToOne
+    private Wallet wallet;
 
     public User() {}
 

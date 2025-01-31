@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User(user);
         Wallet newUserWallet = new Wallet(newUser);
+        newUser.setWallet(newUserWallet);
 
         userRepository.save(newUser);
         walletRepository.save(newUserWallet);

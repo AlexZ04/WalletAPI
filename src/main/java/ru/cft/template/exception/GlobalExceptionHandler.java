@@ -31,4 +31,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseDto(HttpStatus.FORBIDDEN.value(), exception.getMessage()),
                 HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchWalletException(WalletNotFoundException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchBadTransferException(CantMakeTranserException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
 }
