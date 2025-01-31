@@ -1,8 +1,10 @@
 package ru.cft.template.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.cft.template.model.contstant.Constant;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,9 +23,9 @@ public class Session {
 
     public Session() {}
 
-    public Session(User user) {
+    public Session(User user, LocalDateTime expTime, Boolean isActive) {
         this.user = user;
-        expirationTime = LocalDateTime.now().plusMinutes(30);
+        expirationTime = LocalDateTime.now().plusMinutes(Constant.SESSION_LIFETIME_IN_MINUTES);
         active = true;
     }
 }

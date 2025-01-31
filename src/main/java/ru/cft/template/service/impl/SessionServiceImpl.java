@@ -2,6 +2,7 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cft.template.model.contstant.Constant;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
@@ -33,17 +34,26 @@ public class SessionServiceImpl implements SessionService {
             throw new UnauthorizedException(ExceptionTexts.INVALID_CREDENTIALS);
         }
 
-        Session session = new Session(user);
+        Session session = new Session(user,
+                LocalDateTime.now().plusMinutes(Constant.SESSION_LIFETIME_IN_MINUTES), true);
         sessionRepository.save(session);
 
-        return new SessionDto(session);
+        return SessionDto.builder()
+                .sessionId(session.getSessionId())
+                .expirationTime(session.getExpirationTime())
+                .active(session.getActive())
+                .build();
     }
 
     @Override
     public SessionDto getSessionInfo(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 
-        return new SessionDto(session);
+        return SessionDto.builder()
+                .sessionId(session.getSessionId())
+                .expirationTime(session.getExpirationTime())
+                .active(session.getActive())
+                .build();
     }
 
     @Override

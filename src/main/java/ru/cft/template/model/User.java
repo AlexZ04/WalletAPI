@@ -27,21 +27,24 @@ public class User {
     private LocalDateTime birthday;
     private String password;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime createTime = LocalDateTime.now();
+    private LocalDateTime createTime;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime updateTime = null;
+    private LocalDateTime updateTime;
     @OneToOne
     private Wallet wallet;
 
     public User() {}
 
-    public User(UserCreateDto user) {
-        firstName = user.getFirstName();
-        lastName = user.getLastName();
-        middleName = user.getMiddleName();
-        phone = user.getPhone();
-        email = user.getEmail();
-        birthday = user.getBirthday();
-        password = SecurityUtility.hashPassword(user.getPassword());
+    public User(String lastName, String firstName, String middleName, String phone, String email,
+                LocalDateTime birthday, String password, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.phone = phone;
+        this.email = email;
+        this.birthday = birthday;
+        this.password = password;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 }

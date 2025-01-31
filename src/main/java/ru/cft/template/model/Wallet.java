@@ -2,6 +2,7 @@ package ru.cft.template.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.cft.template.model.contstant.Constant;
 
 @Data
 @Entity
@@ -16,8 +17,8 @@ public class Wallet {
 
     public Wallet() {}
 
-    public Wallet(User user) {
+    public Wallet(User user, Long balance) {
         this.user = user;
-        balance = 100L;
+        this.balance = balance;
     }
 }

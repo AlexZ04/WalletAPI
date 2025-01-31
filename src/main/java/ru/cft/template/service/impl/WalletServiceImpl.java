@@ -35,7 +35,10 @@ public class WalletServiceImpl implements WalletService {
 
         Wallet wallet = walletRepository.findByUser(session.getUser());
 
-        return new WalletDto(wallet);
+        return WalletDto.builder()
+                .walletNumber(wallet.getId())
+                .balance(wallet.getBalance())
+                .build();
     }
 
     @Override

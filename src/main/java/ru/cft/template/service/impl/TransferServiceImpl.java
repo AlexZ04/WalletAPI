@@ -63,7 +63,11 @@ public class TransferServiceImpl implements TransferService {
         Transfer transfer = new Transfer(from, to, amount);
         transferRepository.save(transfer);
 
-        return new TransferDto(transfer);
+        return TransferDto.builder()
+                .transferId(transfer.getTransferId())
+                .creationTime(transfer.getCreationTime())
+                .amount(transfer.getAmount())
+                .build();
     }
 
     @Override
@@ -78,6 +82,10 @@ public class TransferServiceImpl implements TransferService {
                 session.getUser().getId().longValue() != transfer.getToWallet().getId().longValue())
             throw new ForbidException(ExceptionTexts.FORBID_TRANSACTION_ACCESS);
 
-        return new TransferDto(transfer);
+        return TransferDto.builder()
+                .transferId(transfer.getTransferId())
+                .creationTime(transfer.getCreationTime())
+                .amount(transfer.getAmount())
+                .build();
     }
 }

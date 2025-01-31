@@ -13,10 +13,12 @@ import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;
 import ru.cft.template.model.Wallet;
+import ru.cft.template.model.contstant.Constant;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.UserService;
+import ru.cft.template.utility.SecurityUtility;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -39,8 +41,18 @@ public class UserServiceImpl implements UserService {
             throw new UsedCredentialsException(ExceptionTexts.PHONE_ALREADY_USED);
         }
 
-        User newUser = new User(user);
-        Wallet newUserWallet = new Wallet(newUser);
+        User newUser = new User(
+                user.getLastName(),
+                user.getFirstName(),
+                user.getMiddleName(),
+                user.getPhone(),
+                user.getEmail(),
+                user.getBirthday(),
+                SecurityUtility.hashPassword(user.getPassword()),
+                LocalDateTime.now(),
+                null
+        );
+        Wallet newUserWallet = new Wallet(newUser, Constant.MONEY_STARTER_PACK);
         newUser.setWallet(newUserWallet);
 
         userRepository.save(newUser);
@@ -57,10 +69,22 @@ public class UserServiceImpl implements UserService {
         Session session = securityService.getSession(sessionId);
 
         if (session.getUser().getId().longValue() != user.getId().longValue()) {
-            return new ResponseEntity<>(new UserShortDto(user), HttpStatus.OK);
+            return new ResponseEntity<>(UserShortDto.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName().charAt(0) + ".")
+                    .build(), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
+        return new ResponseEntity<>(UserDto.builder()
+                .lastName(user.getLastName())
+                .firstName(user.getFirstName())
+                .middleName(user.getMiddleName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .birthday(user.getBirthday())
+                .createTime(user.getCreateTime())
+                .updateTime(user.getUpdateTime())
+                .build(), HttpStatus.OK);
     }
 
     @Override
