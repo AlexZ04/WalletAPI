@@ -27,7 +27,7 @@ public class UserController {
         return userService.getUserById(id, sessionId);
     }
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/users")
     public void updateUser(@RequestBody UserUpdateDto user, @RequestHeader UUID sessionId) {
         userService.updateUser(user, sessionId);
     }
