@@ -17,16 +17,27 @@ public class MoneyTransactionServiceImpl implements MoneyTransactionService {
     @Override
     public void createTransaction(Wallet from, Wallet to, Long amount) {
 
-        if (from.getBalance() < amount)
-            throw new NotEnoughMoneyException(ExceptionTexts.NOT_ENOUGH_MONEY);
-
         if (from.getId().longValue() == to.getId().longValue())
             throw new SelfTransactionException(ExceptionTexts.SELF_TRANSACTION);
 
-        from.setBalance(from.getBalance() - amount);
-        to.setBalance(from.getBalance() + amount);
-
-        walletRepository.save(from);
-        walletRepository.save(to);
+        writeOffMoney(from, amount);
+        putMoney(to, amount);
     }
+
+    @Override
+    public void writeOffMoney(Wallet wallet, Long amount) {
+        if (wallet.getBalance() < amount)
+            throw new NotEnoughMoneyException(ExceptionTexts.NOT_ENOUGH_MONEY);
+
+        wallet.setBalance(wallet.getBalance() - amount);
+        walletRepository.save(wallet);
+    }
+
+    @Override
+    public void putMoney(Wallet wallet, Long amount) {
+        wallet.setBalance(wallet.getBalance() + amount);
+        walletRepository.save(wallet);
+    }
+
+
 }
