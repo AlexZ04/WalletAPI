@@ -17,13 +17,14 @@ import ru.cft.template.service.TransferService;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("api")
 @AllArgsConstructor
 public class TransferController {
     private final TransferService transferService;
     private final SessionService sessionService;
     private final SessionRepository sessionRepository;
 
-    @PostMapping("/transfers/byId")
+    @PostMapping("/transfers/by-id")
     public TransferDto createTransactionByWalletId(@RequestHeader UUID sessionId,
                                                    @RequestBody TransferCreateByIdDto transferInfo) {
 
@@ -39,7 +40,7 @@ public class TransferController {
         return transferService.createTransfer(walletFrom, walletTo, transferInfo.getAmount());
     }
 
-    @PostMapping("/transfers/byPhone")
+    @PostMapping("/transfers/by-phone")
     public TransferDto createTransactionByPhone(@RequestHeader UUID sessionId,
                                                 @RequestBody TransferCreateByPhoneDto transferInfo) {
 

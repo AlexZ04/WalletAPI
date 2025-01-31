@@ -11,6 +11,7 @@ import ru.cft.template.service.SessionService;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("api")
 @AllArgsConstructor
 public class SessionController {
     private final SessionService service;

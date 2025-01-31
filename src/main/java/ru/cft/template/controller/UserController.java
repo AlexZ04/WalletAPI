@@ -11,6 +11,7 @@ import ru.cft.template.service.UserService;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("api")
 @AllArgsConstructor
 public class UserController {
 
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> getUserByUId(@PathVariable Long id, @RequestHeader UUID sessionId) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id, @RequestHeader UUID sessionId) {
         return service.getUserById(id, sessionId);
     }
 

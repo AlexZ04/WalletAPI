@@ -60,18 +60,9 @@ public class WalletServiceImpl implements WalletService {
             throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
-        int percent = random.nextInt(101);
-
-        if (percent < 25 || percent == 100) {
+        if (random.nextInt(101) < 25) {
             Wallet wallet = walletRepository.findByUser(user);
-            int money;
-
-            if (percent < 25) {
-                money = random.nextInt(20) + 1;
-            }
-            else {
-                money = -1;
-            }
+            int money = random.nextInt(20) + 1;
 
             wallet.setBalance(Math.max(wallet.getBalance() + money, 0));
             walletRepository.save(wallet);
