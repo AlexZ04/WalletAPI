@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.transfer.TransferCreateByIdDto;
 import ru.cft.template.dto.transfer.TransferCreateByPhoneDto;
 import ru.cft.template.dto.transfer.TransferDto;
-import ru.cft.template.service.SecurityService;
-import ru.cft.template.service.SessionService;
+import ru.cft.template.dto.transfer.TransferType;
+import ru.cft.template.model.Transfer;
 import ru.cft.template.service.TransferService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,8 +31,10 @@ public class TransferController {
     }
 
     @GetMapping("/transfers")
-    public void getTransactionsInfo() {
-
+    public List<Transfer> getTransactionsList(@RequestHeader UUID sessionId,
+                                              @RequestParam(name = "transferType") TransferType transferType,
+                                              @RequestParam(name = "userId", required = false) Long userId) {
+        return transferService.getTransactionsList(sessionId, transferType, userId);
     }
 
     @GetMapping("/transfers/{transferId}")
