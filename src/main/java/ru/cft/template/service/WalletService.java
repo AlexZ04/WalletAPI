@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface WalletService {
     WalletDto getWalletInfo(Long userId, UUID sessionId);
-    void hesoyam(Long userId, UUID sessionId);
+    String hesoyam(Long userId, UUID sessionId);
 }

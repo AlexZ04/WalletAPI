@@ -19,8 +19,8 @@ public class WalletController {
     }
 
     @PostMapping("/wallets/{userId}/HESOYAM")
-    public void hesoyam(@PathVariable Long userId, @RequestHeader UUID sessionId) {
-        walletService.hesoyam(userId, sessionId);
+    public String hesoyam(@PathVariable Long userId, @RequestHeader UUID sessionId) {
+        return walletService.hesoyam(userId, sessionId);
     }
 
 }

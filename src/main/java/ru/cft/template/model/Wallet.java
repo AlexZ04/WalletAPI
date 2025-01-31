@@ -14,6 +14,8 @@ public class Wallet {
     @OneToOne
     User user;
 
+    public Wallet() {}
+
     public Wallet(User user) {
         this.user = user;
         balance = 100L;

@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
-        if (sessionService.checkSession(session)) {
+        if (!sessionService.checkSession(session)) {
             throw new UnauthorizedException("You session expired");
         }
 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
             throw new ForbidException("You can't edit another person profile");
         }
 
-        if (sessionService.checkSession(session)) {
+        if (!sessionService.checkSession(session)) {
             throw new UnauthorizedException("You session expired");
         }
 

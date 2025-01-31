@@ -1,7 +1,9 @@
 package ru.cft.template.service.impl;
 
+import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cft.template.dto.ResponseDto;
 import ru.cft.template.dto.wallet.WalletDto;
 import ru.cft.template.exception.SessionNotFoundException;
 import ru.cft.template.exception.UnauthorizedException;
@@ -15,6 +17,7 @@ import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.WalletService;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -25,6 +28,8 @@ public class WalletServiceImpl implements WalletService {
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
 
+    private final Random random = new Random();
+
     @Override
     public WalletDto getWalletInfo(Long userId, UUID sessionId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -32,17 +37,47 @@ public class WalletServiceImpl implements WalletService {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
-        if (sessionService.checkSession(session)) {
+        if (!sessionService.checkSession(session)) {
             throw new UnauthorizedException("You session expired");
         }
 
-        Wallet wallet = walletRepository.foundByUser(user);
+        Wallet wallet = walletRepository.findByUser(user);
 
         return new WalletDto(wallet);
     }
 
     @Override
-    public void hesoyam(Long userId, UUID sessionId) {
-        //todo
+    public String hesoyam(Long userId, UUID sessionId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+
+        if (!sessionService.checkSession(session)) {
+            throw new UnauthorizedException("You session expired");
+        }
+
+        int percent = random.nextInt(101);
+
+        if (percent < 25 || percent == 100) {
+            Wallet wallet = walletRepository.findByUser(user);
+            int money;
+
+            if (percent < 25) {
+                money = random.nextInt(20) + 1;
+            }
+            else {
+                money = -1;
+            }
+
+            wallet.setBalance(Math.max(wallet.getBalance() + money, 0));
+            walletRepository.save(wallet);
+
+            return String.format("На баланс было добавлено %d д.е.\nСейчас на балансе: %d денег",
+                    money, wallet.getBalance());
+        }
+
+        return "Денег добавлено не было :(";
+
     }
 }
