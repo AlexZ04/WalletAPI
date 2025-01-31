@@ -2,6 +2,7 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cft.template.exception.SessionAlreadyInactiveException;
 import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
 import ru.cft.template.dto.session.SessionDto;
@@ -51,6 +52,8 @@ public class SessionServiceImpl implements SessionService {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
+        if (!session.getActive()) throw new SessionAlreadyInactiveException(ExceptionTexts.SESSION_ALREADY_INACTIVE);
+
         session.setActive(false);
         sessionRepository.save(session);
     }
@@ -63,15 +66,5 @@ public class SessionServiceImpl implements SessionService {
         session.setActive(true);
         session.setExpirationTime(LocalDateTime.now().plusMinutes(30));
         sessionRepository.save(session);
-    }
-
-    @Override
-    public boolean checkSession(Session session) {
-        if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
-            session.setActive(false);
-            sessionRepository.save(session);
-        }
-
-        return session.getActive();
     }
 }

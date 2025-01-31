@@ -2,6 +2,8 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cft.template.dto.transfer.TransferCreateByIdDto;
+import ru.cft.template.dto.transfer.TransferCreateByPhoneDto;
 import ru.cft.template.dto.transfer.TransferDto;
 import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
@@ -10,6 +12,7 @@ import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.TransferRepository;
 import ru.cft.template.repository.WalletRepository;
+import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.TransferService;
 
@@ -20,8 +23,7 @@ import java.util.UUID;
 public class TransferServiceImpl implements TransferService {
     private final TransferRepository transferRepository;
     private final WalletRepository walletRepository;
-    private final SessionRepository sessionRepository;
-    private final SessionService sessionService;
+    private final SecurityService securityService;
 
     @Override
     public Wallet findWalletById(Long id) {
@@ -36,11 +38,32 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
+    public TransferDto createTransferById(UUID sessionId, TransferCreateByIdDto transferInfo) {
+        Session session = securityService.getSession(sessionId);
+
+        Wallet walletTo = findWalletById(transferInfo.getWalletId());
+        Wallet walletFrom = session.getUser().getWallet();
+
+        return createTransfer(walletFrom, walletTo, transferInfo.getAmount());
+    }
+
+    @Override
+    public TransferDto createTransferByPhone(UUID sessionId, TransferCreateByPhoneDto transferInfo) {
+        Session session = securityService.getSession(sessionId);
+
+        Wallet walletTo = findWalletByPhone(transferInfo.getPhone());
+        Wallet walletFrom = session.getUser().getWallet();
+
+        return createTransfer(walletFrom, walletTo, transferInfo.getAmount());
+    }
+
     public TransferDto createTransfer(Wallet from, Wallet to, Long amount) {
 
         if (from.getBalance() < amount) {
             throw new NotEnoughMoneyException(ExceptionTexts.NOT_ENOUGH_MONEY);
         }
+
+//        if (from.get)
 
         from.setBalance(from.getBalance() - amount);
         to.setBalance(to.getBalance() + amount);
@@ -56,11 +79,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public TransferDto getTransactionInfo(Long transferId, UUID sessionId) {
 
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
-        if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
-        }
+        Session session = securityService.getSession(sessionId);
 
         Transfer transfer = transferRepository.findById(transferId)
                 .orElseThrow(() -> new TransferNotFoundException(ExceptionTexts.TRANSFER_NOT_FOUND));

@@ -62,4 +62,10 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchSessionAlreadyInactiveException(SessionAlreadyInactiveException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
 }

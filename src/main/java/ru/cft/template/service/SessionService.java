@@ -11,5 +11,4 @@ public interface SessionService {
     SessionDto getSessionInfo(UUID sessionId);
     void deleteSession(UUID sessionId);
     void extendSession(UUID sessionId);
-    boolean checkSession(Session session);
 }
