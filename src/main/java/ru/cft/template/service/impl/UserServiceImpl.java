@@ -16,6 +16,7 @@ import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
+import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.UserService;
 
@@ -28,9 +29,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
-    private final SessionService sessionService;
     private final WalletRepository walletRepository;
+    private final SecurityService securityService;
 
     @Override
     public IdResponseDto createUser(UserCreateDto user) {
@@ -57,14 +57,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
+        Session session = securityService.getSession(sessionId);
 
-        if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
-        }
-
-        if (!Objects.equals(session.getUser().getId(), user.getId())) {
+        if (session.getUser().getId().longValue() != user.getId().longValue()) {
             return new ResponseEntity<>(new UserShortDto(user), HttpStatus.OK);
         }
 
@@ -76,16 +71,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
+        Session session = securityService.getSession(sessionId);
 
-        if (!Objects.equals(session.getUser().getId(), user.getId())) {
+        if (session.getUser().getId().longValue() != user.getId().longValue())
             throw new ForbidException(ExceptionTexts.FORBID_PROFILE_EDITING);
-        }
-
-        if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
-        }
 
         user.setLastName(userUpd.getLastName());
         user.setFirstName(userUpd.getFirstName());

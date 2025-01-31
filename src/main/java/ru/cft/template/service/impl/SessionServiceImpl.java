@@ -3,6 +3,7 @@ package ru.cft.template.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cft.template.exception.SessionAlreadyInactiveException;
+import ru.cft.template.service.SecurityService;
 import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
 import ru.cft.template.dto.session.SessionDto;
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class SessionServiceImpl implements SessionService {
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
+    private final SecurityService securityService;
 
     @Override
     public SessionDto login(LoginDto loginData) {
@@ -41,18 +43,14 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SessionDto getSessionInfo(UUID sessionId) {
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
+        Session session = securityService.getSession(sessionId);
 
         return new SessionDto(session);
     }
 
     @Override
     public void deleteSession(UUID sessionId) {
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
-
-        if (!session.getActive()) throw new SessionAlreadyInactiveException(ExceptionTexts.SESSION_ALREADY_INACTIVE);
+        Session session = securityService.getSession(sessionId);
 
         session.setActive(false);
         sessionRepository.save(session);
@@ -60,8 +58,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void extendSession(UUID sessionId) {
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
+        Session session = securityService.getSession(sessionId);
 
         session.setActive(true);
         session.setExpirationTime(LocalDateTime.now().plusMinutes(30));

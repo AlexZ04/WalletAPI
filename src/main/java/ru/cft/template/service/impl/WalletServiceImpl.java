@@ -15,6 +15,7 @@ import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
+import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.WalletService;
 
@@ -28,6 +29,7 @@ public class WalletServiceImpl implements WalletService {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
+    private final SecurityService securityService;
 
     private final Random random = new Random();
 
@@ -36,12 +38,7 @@ public class WalletServiceImpl implements WalletService {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
-
-        if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
-        }
+        Session session = securityService.getSession(sessionId);
 
         Wallet wallet = walletRepository.findByUser(user);
 
@@ -53,12 +50,7 @@ public class WalletServiceImpl implements WalletService {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
-
-        if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
-        }
+        Session session = securityService.getSession(sessionId);
 
         if (random.nextInt(101) < 25) {
             Wallet wallet = walletRepository.findByUser(user);
