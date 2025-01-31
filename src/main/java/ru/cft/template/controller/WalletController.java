@@ -8,7 +8,6 @@ import ru.cft.template.service.WalletService;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/Wallet")
 @AllArgsConstructor
 public class WalletController {
     private final WalletService walletService;

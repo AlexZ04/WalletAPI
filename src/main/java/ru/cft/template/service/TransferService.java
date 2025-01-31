@@ -9,4 +9,5 @@ public interface TransferService {
     Wallet findWalletById(Long id);
     Wallet findWalletByPhone(String phone);
     TransferDto createTransfer(Wallet from, Wallet to, Long amount);
+    TransferDto getTransactionInfo(Long transferId, UUID sessionId);
 }

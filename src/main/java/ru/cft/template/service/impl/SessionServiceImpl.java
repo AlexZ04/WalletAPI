@@ -2,12 +2,12 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.cft.template.configuration.Security;
+import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
 import ru.cft.template.dto.session.SessionDto;
+import ru.cft.template.exception.ExceptionTexts;
 import ru.cft.template.exception.SessionNotFoundException;
 import ru.cft.template.exception.UnauthorizedException;
-import ru.cft.template.exception.UserNotFoundException;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;
 import ru.cft.template.repository.SessionRepository;
@@ -26,10 +26,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public SessionDto login(LoginDto loginData) {
         User user = userRepository.findById(loginData.getUserId())
-                .orElseThrow(() -> new UnauthorizedException("Incorrect credentials"));
+                .orElseThrow(() -> new UnauthorizedException(ExceptionTexts.INVALID_CREDENTIALS));
 
-        if (!Security.checkPassword(loginData.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Incorrect credentials");
+        if (!SecurityUtility.checkPassword(loginData.getPassword(), user.getPassword())) {
+            throw new UnauthorizedException(ExceptionTexts.INVALID_CREDENTIALS);
         }
 
         Session session = new Session(user);
@@ -41,7 +41,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public SessionDto getSessionInfo(UUID sessionId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         return new SessionDto(session);
     }
@@ -49,7 +49,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void deleteSession(UUID sessionId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         session.setActive(false);
         sessionRepository.save(session);
@@ -58,7 +58,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void extendSession(UUID sessionId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         session.setActive(true);
         session.setExpirationTime(LocalDateTime.now().plusMinutes(30));

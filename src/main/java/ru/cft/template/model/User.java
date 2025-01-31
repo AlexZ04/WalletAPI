@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.cft.template.configuration.Security;
+import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.user.UserCreateDto;
 
 import java.time.LocalDateTime;
@@ -42,6 +42,6 @@ public class User {
         phone = user.getPhone();
         email = user.getEmail();
         birthday = user.getBirthday();
-        password = Security.hashPassword(user.getPassword());
+        password = SecurityUtility.hashPassword(user.getPassword());
     }
 }

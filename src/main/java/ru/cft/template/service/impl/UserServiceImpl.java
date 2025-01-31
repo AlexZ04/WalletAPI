@@ -36,10 +36,10 @@ public class UserServiceImpl implements UserService {
     public IdResponseDto createUser(UserCreateDto user) {
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new UsedCredentialsException("Email already used");
+            throw new UsedCredentialsException(ExceptionTexts.EMAIL_ALREADY_USED);
         }
         if (userRepository.existsByPhone(user.getPhone())) {
-            throw new UsedCredentialsException("Phone already used");
+            throw new UsedCredentialsException(ExceptionTexts.PHONE_ALREADY_USED);
         }
 
         User newUser = new User(user);
@@ -54,13 +54,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> getUserById(Long id, UUID sessionId) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("Your session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         if (!Objects.equals(session.getUser().getId(), user.getId())) {
@@ -72,17 +73,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, UserUpdateDto userUpd, UUID sessionId) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         if (!Objects.equals(session.getUser().getId(), user.getId())) {
-            throw new ForbidException("You can't edit another person profile");
+            throw new ForbidException(ExceptionTexts.FORBID_PROFILE_EDITING);
         }
 
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("You session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         user.setLastName(userUpd.getLastName());

@@ -50,4 +50,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchTransferNotFoundException(TransferNotFoundException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseDto> catchSessionNotFoundException(SessionNotFoundException exception) {
+        return new ResponseEntity<>(new ResponseDto(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
 }

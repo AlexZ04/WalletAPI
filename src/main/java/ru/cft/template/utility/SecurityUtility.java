@@ -1,9 +1,8 @@
-package ru.cft.template.configuration;
+package ru.cft.template.utility;
 
-import org.springframework.context.annotation.Bean;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class Security {
+public class SecurityUtility {
 
     public static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));

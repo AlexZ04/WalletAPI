@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.transfer.TransferCreateByIdDto;
 import ru.cft.template.dto.transfer.TransferCreateByPhoneDto;
 import ru.cft.template.dto.transfer.TransferDto;
+import ru.cft.template.exception.ExceptionTexts;
 import ru.cft.template.exception.SessionNotFoundException;
 import ru.cft.template.exception.UnauthorizedException;
 import ru.cft.template.model.Session;
@@ -16,7 +17,6 @@ import ru.cft.template.service.TransferService;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/Transfer")
 @AllArgsConstructor
 public class TransferController {
     private final TransferService transferService;
@@ -28,9 +28,9 @@ public class TransferController {
                                                    @RequestBody TransferCreateByIdDto transferInfo) {
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("Your session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         Wallet walletTo = transferService.findWalletById(transferInfo.getWalletId());
@@ -44,14 +44,24 @@ public class TransferController {
                                                 @RequestBody TransferCreateByPhoneDto transferInfo) {
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("Your session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         Wallet walletTo = transferService.findWalletByPhone(transferInfo.getPhone());
         Wallet walletFrom = session.getUser().getWallet();
 
         return transferService.createTransfer(walletFrom, walletTo, transferInfo.getAmount());
+    }
+
+    @GetMapping("/transfers")
+    public void getTransactionsInfo() {
+
+    }
+
+    @GetMapping("/transfers/{transferId}")
+    public TransferDto getTransactionInfo(@PathVariable Long transferId, @RequestHeader UUID sessionId) {
+        return transferService.getTransactionInfo(transferId, sessionId);
     }
 }

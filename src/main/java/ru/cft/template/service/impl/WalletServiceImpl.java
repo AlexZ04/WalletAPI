@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cft.template.dto.ResponseDto;
 import ru.cft.template.dto.wallet.WalletDto;
+import ru.cft.template.exception.ExceptionTexts;
 import ru.cft.template.exception.SessionNotFoundException;
 import ru.cft.template.exception.UnauthorizedException;
 import ru.cft.template.exception.UserNotFoundException;
@@ -32,13 +33,14 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public WalletDto getWalletInfo(Long userId, UUID sessionId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("You session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         Wallet wallet = walletRepository.findByUser(user);
@@ -48,13 +50,14 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public String hesoyam(Long userId, UUID sessionId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException(ExceptionTexts.USER_NOT_FOUND));
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException(ExceptionTexts.SESSION_NOT_FOUND));
 
         if (!sessionService.checkSession(session)) {
-            throw new UnauthorizedException("You session expired");
+            throw new UnauthorizedException(ExceptionTexts.SESSION_EXPIRED);
         }
 
         int percent = random.nextInt(101);

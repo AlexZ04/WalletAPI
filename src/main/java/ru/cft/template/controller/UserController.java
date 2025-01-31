@@ -11,7 +11,6 @@ import ru.cft.template.service.UserService;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/User")
 @AllArgsConstructor
 public class UserController {
 
