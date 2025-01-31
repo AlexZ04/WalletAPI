@@ -2,10 +2,7 @@ package ru.cft.template.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.cft.template.dto.transfer.TransferCreateByIdDto;
-import ru.cft.template.dto.transfer.TransferCreateByPhoneDto;
-import ru.cft.template.dto.transfer.TransferDto;
-import ru.cft.template.dto.transfer.TransferType;
+import ru.cft.template.dto.transfer.*;
 import ru.cft.template.model.Transfer;
 import ru.cft.template.service.TransferService;
 
@@ -31,10 +28,15 @@ public class TransferController {
     }
 
     @GetMapping("/transfers")
-    public List<Transfer> getTransactionsList(@RequestHeader UUID sessionId,
-                                              @RequestParam(name = "transferType") TransferType transferType,
-                                              @RequestParam(name = "userId", required = false) Long userId) {
-        return transferService.getTransactionsList(sessionId, transferType, userId);
+    public TransferPageDto getTransactionsList(@RequestHeader UUID sessionId,
+                                               @RequestParam(name = "transferType") TransferType transferType,
+                                               @RequestParam(name = "userId", required = false) Long userId,
+                                               @RequestParam(name = "count", required = false, defaultValue = "5")
+                                                  int count,
+                                               @RequestParam(name = "page", required = false, defaultValue = "1")
+                                                  int page
+                                              ) {
+        return transferService.getTransactionsList(sessionId, transferType, userId, count, page);
     }
 
     @GetMapping("/transfers/{transferId}")

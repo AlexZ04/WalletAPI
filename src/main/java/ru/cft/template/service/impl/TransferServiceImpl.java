@@ -2,10 +2,8 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.cft.template.dto.transfer.TransferCreateByIdDto;
-import ru.cft.template.dto.transfer.TransferCreateByPhoneDto;
-import ru.cft.template.dto.transfer.TransferDto;
-import ru.cft.template.dto.transfer.TransferType;
+import ru.cft.template.dto.PaginationDto;
+import ru.cft.template.dto.transfer.*;
 import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.Transfer;
@@ -89,12 +87,21 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public List<Transfer> getTransactionsList(UUID sessionId, TransferType transferType, Long userId) {
+    public TransferPageDto getTransactionsList(UUID sessionId, TransferType transferType, Long userId,
+                                               int count, int page) {
         Session session = securityService.getSession(sessionId);
         List<Transfer> transactions = transferRepository.findAll();
 
         // todo filters
+        // todo response
 
-        return transactions;
+        return TransferPageDto.builder()
+//                .transfers(transactions)
+                .pagination(PaginationDto.builder()
+                        .size(0)
+                        .count(0)
+                        .current(0)
+                        .build())
+                .build();
     }
 }
