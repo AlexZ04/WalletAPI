@@ -2,18 +2,13 @@ package ru.cft.template.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cft.template.dto.MessageResponseDto;
 import ru.cft.template.dto.wallet.WalletDto;
-import ru.cft.template.exception.ExceptionTexts;
-import ru.cft.template.exception.UserNotFoundException;
 import ru.cft.template.model.Session;
-import ru.cft.template.model.User;
 import ru.cft.template.model.Wallet;
-import ru.cft.template.repository.SessionRepository;
-import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.MoneyTransactionService;
 import ru.cft.template.service.SecurityService;
-import ru.cft.template.service.SessionService;
 import ru.cft.template.service.WalletService;
 
 import java.util.Random;
@@ -42,7 +37,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public String hesoyam(UUID sessionId) {
+    public MessageResponseDto hesoyam(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 
         if (random.nextInt(101) < 25) {
@@ -51,22 +46,22 @@ public class WalletServiceImpl implements WalletService {
 
             moneyTransactionService.putMoney(wallet, (long) money);
 
-            return String.format("На баланс было добавлено %d д.е.\nСейчас на балансе: %d денег",
-                    money, wallet.getBalance());
+            return new MessageResponseDto(String.format("На баланс было добавлено %d д.е.Сейчас на балансе: %d денег",
+                    money, wallet.getBalance()));
         }
 
-        return "Денег добавлено не было :(";
+        return new MessageResponseDto("Денег добавлено не было :(");
 
     }
 
     @Override
-    public String cashBackCashingOut(UUID sessionId) {
+    public MessageResponseDto cashBackCashingOut(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
         Wallet wallet = walletRepository.findByUser(session.getUser());
 
         moneyTransactionService.cashOutCashback(wallet);
 
-        return String.format("Кэшбек снят. Сейчас на балансе: %d денег",
-                wallet.getBalance());
+        return new MessageResponseDto(String.format("Кэшбек снят. Сейчас на балансе: %d денег",
+                wallet.getBalance()));
     }
 }

@@ -2,6 +2,7 @@ package ru.cft.template.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.cft.template.dto.MessageResponseDto;
 import ru.cft.template.dto.wallet.WalletDto;
 import ru.cft.template.service.WalletService;
 
@@ -19,12 +20,12 @@ public class WalletController {
     }
 
     @PostMapping("/wallets/HESOYAM")
-    public String hesoyam(@RequestHeader UUID sessionId) {
+    public MessageResponseDto hesoyam(@RequestHeader UUID sessionId) {
         return walletService.hesoyam(sessionId);
     }
 
     @PostMapping("/wallets/cashback")
-    public String cashbackCashingOut(@RequestHeader UUID sessionId) {
+    public MessageResponseDto cashbackCashingOut(@RequestHeader UUID sessionId) {
         return walletService.cashBackCashingOut(sessionId);
     }
 
