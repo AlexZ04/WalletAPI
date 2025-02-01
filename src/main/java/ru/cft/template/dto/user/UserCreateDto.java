@@ -23,6 +23,7 @@ public class UserCreateDto {
     @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!?])[A-Za-z\\d!?]{8,64}")
     String password;
 
-    public UserCreateDto() {}
+    public UserCreateDto() {
+    }
 
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class TransferCreateByIdDto {
     private Long walletId;
-    @Min(value = 1)
+    @Min(1)
     private Long amount;
 
     public TransferCreateByIdDto(Long id, Long amount) {

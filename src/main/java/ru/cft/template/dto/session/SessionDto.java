@@ -2,7 +2,6 @@ package ru.cft.template.dto.session;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.cft.template.model.Session;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

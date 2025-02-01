@@ -13,7 +13,7 @@ import ru.cft.template.exception.*;
 import ru.cft.template.model.Session;
 import ru.cft.template.model.User;
 import ru.cft.template.model.Wallet;
-import ru.cft.template.model.contstant.Constant;
+import ru.cft.template.contstant.Constant;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.service.SecurityService;
@@ -52,11 +52,11 @@ public class UserServiceImpl implements UserService {
                 LocalDateTime.now(),
                 null
         );
-        Wallet newUserWallet = new Wallet(newUser, Constant.MONEY_STARTER_PACK);
+        Wallet newUserWallet = new Wallet(newUser, Constant.MONEY_STARTER_PACK, Constant.CASHBACK_STARTER_PACK);
         newUser.setWallet(newUserWallet);
 
-        userRepository.save(newUser);
         walletRepository.save(newUserWallet);
+        userRepository.save(newUser);
 
         return new IdResponseDto(newUser.getId());
     }

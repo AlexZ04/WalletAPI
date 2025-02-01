@@ -11,6 +11,7 @@ import ru.cft.template.model.Wallet;
 import ru.cft.template.repository.SessionRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.repository.WalletRepository;
+import ru.cft.template.service.MoneyTransactionService;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.service.SessionService;
 import ru.cft.template.service.WalletService;
@@ -22,10 +23,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class WalletServiceImpl implements WalletService {
     private final WalletRepository walletRepository;
-    private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
-    private final SessionService sessionService;
     private final SecurityService securityService;
+    private final MoneyTransactionService moneyTransactionService;
 
     private final Random random = new Random();
 
@@ -38,6 +37,7 @@ public class WalletServiceImpl implements WalletService {
         return WalletDto.builder()
                 .walletNumber(wallet.getId())
                 .balance(wallet.getBalance())
+                .cashback(wallet.getCashback())
                 .build();
     }
 
@@ -49,8 +49,7 @@ public class WalletServiceImpl implements WalletService {
             Wallet wallet = walletRepository.findByUser(session.getUser());
             int money = random.nextInt(20) + 1;
 
-            wallet.setBalance(Math.max(wallet.getBalance() + money, 0));
-            walletRepository.save(wallet);
+            moneyTransactionService.putMoney(wallet, (long) money);
 
             return String.format("На баланс было добавлено %d д.е.\nСейчас на балансе: %d денег",
                     money, wallet.getBalance());
@@ -58,5 +57,16 @@ public class WalletServiceImpl implements WalletService {
 
         return "Денег добавлено не было :(";
 
+    }
+
+    @Override
+    public String cashBackCashingOut(UUID sessionId) {
+        Session session = securityService.getSession(sessionId);
+        Wallet wallet = walletRepository.findByUser(session.getUser());
+
+        moneyTransactionService.cashOutCashback(wallet);
+
+        return String.format("Кэшбек снят. Сейчас на балансе: %d денег",
+                wallet.getBalance());
     }
 }

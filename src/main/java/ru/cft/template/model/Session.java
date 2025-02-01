@@ -1,10 +1,9 @@
 package ru.cft.template.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.cft.template.model.contstant.Constant;
+import ru.cft.template.contstant.Constant;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

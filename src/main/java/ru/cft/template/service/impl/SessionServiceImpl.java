@@ -1,8 +1,9 @@
 package ru.cft.template.service.impl;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.cft.template.model.contstant.Constant;
+import ru.cft.template.contstant.Constant;
 import ru.cft.template.service.SecurityService;
 import ru.cft.template.utility.SecurityUtility;
 import ru.cft.template.dto.session.LoginDto;
@@ -16,6 +17,7 @@ import ru.cft.template.repository.UserRepository;
 import ru.cft.template.service.SessionService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,6 +35,14 @@ public class SessionServiceImpl implements SessionService {
         if (!SecurityUtility.checkPassword(loginData.getPassword(), user.getPassword())) {
             throw new UnauthorizedException(ExceptionTexts.INVALID_CREDENTIALS);
         }
+
+        List<Session> userSessions = sessionRepository.findAll().stream()
+                .filter(s -> s.getUser().getId().longValue() == loginData.getUserId().longValue()
+                        && s.getActive())
+                .toList();
+
+        userSessions.forEach(s -> s.setActive(false));
+        sessionRepository.saveAll(userSessions);
 
         Session session = new Session(user,
                 LocalDateTime.now().plusMinutes(Constant.SESSION_LIFETIME_IN_MINUTES), true);
@@ -64,7 +74,18 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.save(session);
     }
 
-    @Override
+    @PostConstruct
+    public void init() {
+        List<Session> sessions = sessionRepository.findAll().stream()
+                .filter(Session::getActive)
+                .toList();
+
+        sessions.forEach(s -> s.setExpirationTime(
+                LocalDateTime.now().plusMinutes(Constant.SESSION_LIFETIME_IN_MINUTES)));
+
+        sessionRepository.saveAll(sessions);
+    }
+
     public void extendSession(UUID sessionId) {
         Session session = securityService.getSession(sessionId);
 

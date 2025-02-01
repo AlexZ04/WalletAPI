@@ -2,7 +2,9 @@ package ru.cft.template.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.cft.template.model.contstant.Constant;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -12,13 +14,18 @@ public class Wallet {
     @GeneratedValue
     Long id;
     Long balance;
-    @OneToOne
+    Double cashback;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    LocalDateTime lastOutTransactionTime = null;
+    @OneToOne(cascade = CascadeType.ALL)
     User user;
 
-    public Wallet() {}
+    public Wallet() {
+    }
 
-    public Wallet(User user, Long balance) {
+    public Wallet(User user, Long balance, Double cashback) {
         this.user = user;
         this.balance = balance;
+        this.cashback = cashback;
     }
 }

@@ -1,9 +1,6 @@
 package ru.cft.template.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "transfers")
 public class Transfer {
     @Id
+    @GeneratedValue
     private Long transferId;
     @ManyToOne
     private Wallet fromWallet;
@@ -23,11 +21,13 @@ public class Transfer {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime creationTime;
 
-    public Transfer() {}
+    public Transfer() {
+    }
 
-    public Transfer(Wallet from, Wallet to, Long amount) {
+    public Transfer(Wallet from, Wallet to, Long amount, LocalDateTime creationTime) {
         fromWallet = from;
         toWallet = to;
         this.amount = amount;
+        this.creationTime = creationTime;
     }
 }

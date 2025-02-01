@@ -30,7 +30,7 @@ public class User {
     private LocalDateTime createTime;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updateTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
 
     public User() {}

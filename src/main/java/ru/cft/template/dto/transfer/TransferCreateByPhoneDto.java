@@ -8,7 +8,7 @@ import lombok.Data;
 public class TransferCreateByPhoneDto {
     @Pattern(regexp = "7\\d{10}")
     private String phone;
-    @Min(value = 1)
+    @Min(1)
     private Long amount;
 
     public TransferCreateByPhoneDto(String phone, Long amount) {

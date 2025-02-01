@@ -23,4 +23,9 @@ public class WalletController {
         return walletService.hesoyam(sessionId);
     }
 
+    @PostMapping("/wallets/cashback")
+    public String cashbackCashingOut(@RequestHeader UUID sessionId) {
+        return walletService.cashBackCashingOut(sessionId);
+    }
+
 }

@@ -5,5 +5,6 @@ import ru.cft.template.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByPhone(String phone);
+
     Boolean existsByEmail(String email);
 }

@@ -12,20 +12,20 @@ import java.util.UUID;
 @RequestMapping("api")
 @AllArgsConstructor
 public class SessionController {
-    private final SessionService service;
+    private final SessionService sessionService;
 
     @PostMapping("/sessions")
     public SessionDto login(@RequestBody LoginDto loginData) {
-        return service.login(loginData);
+        return sessionService.login(loginData);
     }
 
     @GetMapping("/sessions/{sessionId}")
     public SessionDto getSessionInfo(@PathVariable UUID sessionId) {
-        return service.getSessionInfo(sessionId);
+        return sessionService.getSessionInfo(sessionId);
     }
 
     @DeleteMapping("/sessions/{sessionId}")
     public void logout(@PathVariable UUID sessionId) {
-        service.deleteSession(sessionId);
+        sessionService.deleteSession(sessionId);
     }
 }

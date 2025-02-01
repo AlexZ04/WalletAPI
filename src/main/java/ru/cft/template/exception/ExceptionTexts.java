@@ -14,4 +14,7 @@ public class ExceptionTexts {
     public static final String SESSION_ALREADY_INACTIVE = "Session is already inactive";
     public static final String SELF_TRANSACTION = "Transaction to yourself is not allowed";
     public static final String FORBID_TRANSACTION_ACCESS = "You can't get an info about another person transfer";
+    public static final String NOT_ENOUGH_CASHBACK = "Not enough cashback";
+    public static final String FORBID_TRANSACTION_TIME = "You need to wait to complete the operation";
+    public static final String INVALID_MONEY_AMOUNT = "Invalid money amount!";
 }

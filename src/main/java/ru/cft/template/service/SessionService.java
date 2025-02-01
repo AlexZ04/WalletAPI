@@ -8,7 +8,8 @@ import java.util.UUID;
 
 public interface SessionService {
     SessionDto login(LoginDto loginData);
+
     SessionDto getSessionInfo(UUID sessionId);
+
     void deleteSession(UUID sessionId);
-    void extendSession(UUID sessionId);
 }
